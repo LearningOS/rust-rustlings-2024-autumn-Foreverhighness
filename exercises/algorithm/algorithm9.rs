@@ -36,10 +36,25 @@ where
         self.len() == 0
     }
 
+    pub fn check(&self, description: &str) {
+        assert!(self.count == self.items.len() - 1);
+        for idx in 1..self.items.len() {
+            let l_idx = self.left_child_idx(idx);
+            let r_idx = self.right_child_idx(idx);
+            if l_idx <= self.count {
+                assert!((self.comparator)(&self.items[idx], &self.items[l_idx]));
+            }
+            if r_idx <= self.count {
+                assert!((self.comparator)(&self.items[idx], &self.items[r_idx]));
+            }
+        }
+    }
+
     pub fn push_up(&mut self, mut idx: usize) {
         while idx > 1 && (self.comparator)(&self.items[idx], &self.items[self.parent_idx(idx)]) {
             let p_idx = self.parent_idx(idx);
             self.items.swap(idx, p_idx);
+            idx = p_idx;
         }
     }
 
@@ -47,7 +62,7 @@ where
         while self.children_present(idx) {
             let child_idx = self.smallest_child_idx(idx);
 
-            if (self.comparator)(&self.items[child_idx], &self.items[idx]) {
+            if (self.comparator)(&self.items[idx], &self.items[child_idx]) {
                 break;
             }
 

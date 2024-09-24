@@ -28,7 +28,7 @@ impl Graph for UndirectedGraph {
     fn adjacency_table(&self) -> &HashMap<String, Vec<(String, i32)>> {
         &self.adjacency_table
     }
-    fn add_edge(&mut self, edge: (&str, &str, i32)) {
+    fn add_edge(&mut self, (u, v, w): (&str, &str, i32)) {
         self.adjacency_table_mutable()
             .entry(u.into())
             .or_default()
